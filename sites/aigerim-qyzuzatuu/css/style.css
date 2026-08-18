@@ -289,8 +289,8 @@ body.is-locked .page{ transform:translateY(calc(120 * var(--u))); }
   background:var(--lav);
 }
 .bride__photo{
-  left:23%; top:4%;
-  width:54%;
+  left:25%; top:4%;
+  width:50%;   /* кадр 2:3, а не 3:4 — иначе упирается в стих */
 }
 .bride__photo::before{           /* подложка со сдвигом, как у фото ресторана */
   content:"";
@@ -309,7 +309,7 @@ body.is-locked .page{ transform:translateY(calc(120 * var(--u))); }
 }
 .bride__img{ display:none; }     /* показывается, только когда файл есть */
 .bride__stub{
-  aspect-ratio:3/4;
+  aspect-ratio:2/3;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -320,7 +320,7 @@ body.is-locked .page{ transform:translateY(calc(120 * var(--u))); }
   text-transform:uppercase;
 }
 .bride__verse{
-  left:0; top:55%;
+  left:0; top:57%;
   width:100%;
   font-size:calc(15 * var(--u));
   line-height:1.65;
