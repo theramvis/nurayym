@@ -93,101 +93,100 @@ p{ margin:0; }
 
 /* =========================================================
    КОНВЕРТ
-   Крупный план середины: сходящиеся кромки верхней створки и печать
-   на стыке. Три слоя — карман (.env__body) с V-образным вырезом,
-   створка (.env__flap) на 3D-петле и сама страница за ними.
-   По клику створка отгибается вверх, страница выезжает из кармана,
-   карман уезжает вниз.
+   Три слоя из готовых картинок: карман (конверт минус треугольник
+   створки), сама створка на 3D-петле по своему верхнему краю и
+   печать, приклеенная к вершине створки. Под ними — изнанка,
+   которая открывается, когда створка поднимается.
    ========================================================= */
 .envelope{
   position:fixed;
   inset:0;
   z-index:100;
-  background:transparent;
-  transition:visibility 0s linear 1.75s;
+  transition:visibility 0s linear 1.9s;
+}
+.env__scene{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(#F2F6FF 0%, #E2EAF9 55%, #D3DEF3 100%);
+  transition:opacity .6s ease .95s;
 }
 .envelope__card{
   position:absolute;
-  top:0; bottom:0;
-  left:50%;
-  width:calc(390 * var(--u));
-  margin-left:calc(-195 * var(--u));
-  overflow:hidden;
-  perspective:calc(1200 * var(--u));
+  left:50%; top:50%;
+  width:calc(500 * var(--u));
+  aspect-ratio:1184/772;
+  transform:translate(-50%,-50%);
+  perspective:calc(1100 * var(--u));
+  filter:drop-shadow(0 calc(14 * var(--u)) calc(26 * var(--u)) rgba(56,80,140,.28));
+  /* падает целиком, вместе с уже откинутой створкой */
+  transition:transform .6s cubic-bezier(.45,.05,.75,.4) .95s;
 }
 
-/* карман: вся площадь, кроме треугольника под створкой.
-   Через этот вырез и видно выезжающую страницу. */
+/* изнанка конверта — видна в проёме, когда створка поднялась */
+.env__inner{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  clip-path:polygon(0 0, 100% 0, 50% 64.77%);
+  background:linear-gradient(180deg, #9DB6D4 0%, #C2D5E9 55%, #DCE8F5 100%);
+}
 .env__body{
   position:absolute;
   inset:0;
   z-index:2;
-  background:#F2F3F6 url("../assets/img/paper-texture.jpg") center/cover no-repeat;
-  clip-path:polygon(0 -14%, 50% 58%, 100% -14%, 100% 100%, 0 100%);
-  box-shadow:0 0 calc(60 * var(--u)) rgba(0,38,118,.16);
-  transition:transform .45s cubic-bezier(.45,.05,.75,.4) 1.05s;
-}
-.env__body::after{
-  content:"";
-  position:absolute; inset:0;
-  background:rgba(44,54,78,.055);  /* лёгкая разница тона: створка лежит поверх кармана */
+  background:url("../assets/img/env-body.png") center/100% 100% no-repeat;
 }
 
-/* верхняя створка — петля по своему верхнему краю.
-   Сама створка только вращается: обрезка треугольником и тени живут
-   на дочерней .env__flap-paper, иначе clip-path срезал бы печать,
-   а filter сплющил бы 3D. Печать лежит внутри и едет вместе со створкой. */
+/* створка: своя альфа задаёт треугольник, поэтому clip-path не нужен.
+   Петля — по верхнему краю картинки. Печать внутри, едет вместе. */
 .env__flap{
   position:absolute;
-  left:0; top:-14%;
-  width:100%; height:72%;
-  z-index:3;
-  transform-origin:50% 0;
-  transform-style:preserve-3d;
-  transition:transform 1.3s cubic-bezier(.45,.02,.4,1);
-}
-.env__flap-paper{
-  position:absolute;
   inset:0;
-  background:#F2F3F6 url("../assets/img/paper-texture.jpg") center/cover no-repeat;
-  clip-path:polygon(0 0, 100% 0, 50% 100%);
-  filter:drop-shadow(0 calc(2 * var(--u)) calc(3 * var(--u)) rgba(48,58,84,.34))
-         drop-shadow(0 calc(10 * var(--u)) calc(18 * var(--u)) rgba(48,58,84,.18));
-}
-.env__flap-paper::after{
-  content:"";
-  position:absolute; inset:0;
-  background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,0) 60%);
+  z-index:3;
+  background:url("../assets/img/env-flap.png") center/100% 100% no-repeat;
+  transform-origin:50% 0;
+  transition:transform 1.3s cubic-bezier(.45,.02,.4,1);
 }
 
 .seal{
   position:absolute;
-  top:100%; left:50%;   /* вершина створки */
-  z-index:2;
-  width:32%;
-  aspect-ratio:1084/1069;
+  left:50%; top:64.77%;        /* вершина створки */
+  width:21%;
+  aspect-ratio:621/788;
   transform:translate(-50%,-50%);
   padding:0; border:0; background:none;
   cursor:pointer;
-  filter:drop-shadow(0 calc(6 * var(--u)) calc(10 * var(--u)) rgba(60,50,20,.32));
-  animation:sealPulse 2.6s ease-in-out infinite;
+  filter:drop-shadow(0 calc(3 * var(--u)) calc(5 * var(--u)) rgba(70,86,120,.42));
+  animation:sealPulse 2.8s ease-in-out infinite;
 }
 .seal img{ width:100%; }
-
-
+.seal__initials{
+  position:absolute;
+  left:50.7%; top:66.9%;
+  transform:translate(-50%,-50%);
+  font-family:var(--serif);
+  font-size:calc(23 * var(--u));
+  letter-spacing:.02em;
+  line-height:1;
+  white-space:nowrap;
+  color:#D8CAB4;
+  text-shadow:0 calc(1 * var(--u)) 0 rgba(255,252,246,.9),
+              0 calc(-1 * var(--u)) calc(1.5 * var(--u)) rgba(150,128,100,.55);
+}
 @keyframes sealPulse{
   0%,100%{ transform:translate(-50%,-50%) scale(1); }
-  50%    { transform:translate(-50%,-50%) scale(1.06); }
+  50%    { transform:translate(-50%,-50%) scale(1.05); }
 }
 
-/* страница ждёт внутри кармана и выезжает вверх */
-.page{ transition:transform .85s cubic-bezier(.4,.04,.25,1) .8s; }
+/* страница ждёт за конвертом и выезжает вверх */
+.page{ transition:transform .85s cubic-bezier(.4,.04,.25,1) .9s; }
 body.is-locked .page{ transform:translateY(calc(120 * var(--u))); }
 
 .envelope.is-open{ visibility:hidden; pointer-events:none; }
 .envelope.is-open .seal{ animation:none; }
+.envelope.is-open .env__scene{ opacity:0; }
 .envelope.is-open .env__flap{ transform:rotateX(-176deg); }
-.envelope.is-open .env__body{ transform:translateY(104%); }
+.envelope.is-open .envelope__card{ transform:translate(-50%,-50%) translateY(300%); }
 
 /* =========================================================
    1. ХИРО   (высота 844 / 390)
