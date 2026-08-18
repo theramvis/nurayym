@@ -127,12 +127,44 @@ assets/audio/   song.mp3
 | Фото ресторана | `assets/img/venue.jpg` (900×1200, 3:4). Чтобы заменить — просто перезапишите файл; если картинка пропадёт, вместо неё снова покажется заглушка `.photo__img--empty` |
 | Музыка | `assets/audio/song.mp3` |
 
-## Что осталось доделать
+## Публикация
 
-Сайт опубликован: **https://theramvis.github.io/nurayym/** (GitHub Pages, ветка `main`,
-корень). Обновление — обычный `git push`: Pages пересобирается сам за минуту-две.
-`og:image` и `og:url` прописаны абсолютными адресами, так что превью работает в
-мессенджерах. Если появится свой домен, поменяйте их и добавьте файл `CNAME`.
+Основная площадка — **Cloudflare Pages**, проект `kelgile`, аккаунт theramvis@gmail.com.
+Сайт лежит подкаталогом, чтобы на домене он открывался по пути:
+
+```
+корень проекта/
+  index.html              заглушка kelgile
+  nuraim-qyzuzatuu/       этот сайт
+```
+
+Сейчас доступен по адресу **https://kelgile.pages.dev/nuraim-qyzuzatuu/**
+
+Обновление:
+
+```
+rsync -a --exclude .git --exclude README.md --exclude assets/envelope \
+      "/Users/marisrakhmanov/Новая папка/" /tmp/cf/nuraim-qyzuzatuu/
+npx wrangler pages deploy /tmp/cf --project-name kelgile --branch main
+```
+
+Все пути внутри страницы относительные, поэтому подкаталог её не ломает; абсолютны
+только `og:url` и `og:image` — их менять при смене адреса.
+
+Резервная копия — GitHub Pages, https://theramvis.github.io/nurayym/ (репозиторий
+`theramvis/nurayym`, ветка `main`, обновляется обычным `git push`).
+
+### Домен kelgile.com
+
+**Домен не зарегистрирован** — реестр .com на запрос отвечает «No match for domain
+KELGILE.COM», записей DNS нет. В Cloudflare-аккаунте его тоже нет: там только
+`insanatelier.com` и `wedding-sydygaly-aidai.com`. Варианты `.kg`, `.net`, `.org`,
+`.site`, `.online` тоже пустые.
+
+Чтобы заработал адрес `kelgile.com/nuraim-qyzuzatuu`, нужно: зарегистрировать домен,
+добавить его в Cloudflare, перевести серверы имён на Cloudflare, привязать домен к
+проекту `kelgile` и поправить `og:url` и `og:image`. Структура каталогов под это уже
+готова — путь заработает сам собой.
 
 Блоки телеграм-группы и анкеты гостя удалены целиком (вместе с обработчиком формы в
 `js/main.js`); на их месте осталась короткая декоративная секция `.decor` — букеты и
