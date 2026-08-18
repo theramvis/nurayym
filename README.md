@@ -138,7 +138,8 @@ assets/audio/   song.mp3
   nuraim-qyzuzatuu/       этот сайт
 ```
 
-Сейчас доступен по адресу **https://kelgile.pages.dev/nuraim-qyzuzatuu/**
+Боевой адрес — **https://kelgile.com/nuraim-qyzuzatuu/**
+Технический, всегда доступен — https://kelgile.pages.dev/nuraim-qyzuzatuu/
 
 Обновление:
 
@@ -154,17 +155,16 @@ npx wrangler pages deploy /tmp/cf --project-name kelgile --branch main
 Резервная копия — GitHub Pages, https://theramvis.github.io/nurayym/ (репозиторий
 `theramvis/nurayym`, ветка `main`, обновляется обычным `git push`).
 
-### Домен kelgile.com
+### Домен
 
-**Домен не зарегистрирован** — реестр .com на запрос отвечает «No match for domain
-KELGILE.COM», записей DNS нет. В Cloudflare-аккаунте его тоже нет: там только
-`insanatelier.com` и `wedding-sydygaly-aidai.com`. Варианты `.kg`, `.net`, `.org`,
-`.site`, `.online` тоже пустые.
+`kelgile.com` зарегистрирован через Cloudflare, зона активна, к проекту `kelgile`
+привязаны апекс и `www` — оба в статусе active, сертификаты выпущены. На апексе стоит
+CNAME на `kelgile.pages.dev` (работает за счёт CNAME flattening).
 
-Чтобы заработал адрес `kelgile.com/nuraim-qyzuzatuu`, нужно: зарегистрировать домен,
-добавить его в Cloudflare, перевести серверы имён на Cloudflare, привязать домен к
-проекту `kelgile` и поправить `og:url` и `og:image`. Структура каталогов под это уже
-готова — путь заработает сам собой.
+Токен wrangler имеет права на Pages (запись) и зоны (только чтение), поэтому DNS-записи
+через него не создать — их заводят в панели Cloudflare. Домены к проекту привязываются
+через API (`POST /accounts/{id}/pages/projects/kelgile/domains`): команды
+`wrangler pages domain` в wrangler 4 больше нет.
 
 Блоки телеграм-группы и анкеты гостя удалены целиком (вместе с обработчиком формы в
 `js/main.js`); на их месте осталась короткая декоративная секция `.decor` — букеты и
