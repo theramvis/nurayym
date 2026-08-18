@@ -1,0 +1,630 @@
+/* =========================================================
+   Кыз узатуу — сайт-приглашение
+   Макет нарисован в сетке 390px (как в оригинале) и целиком
+   масштабируется: все размеры — доли ширины колонки.
+   ========================================================= */
+
+:root{
+  --navy:   #002676;   /* капс-заголовки, цифры */
+  --blue:   #36508A;
+  --text:   #4E6294;   /* основной текст */
+  --label:  #2C437D;   /* мелкие подписи */
+  --lav:    #EBF0FF;   /* лавандовый фон */
+  --white:  #FFFFFF;
+  --cal:    #8FA3CE;
+  --ink:    #3A518B;   /* цвет леттеринга, как в оригинале */
+  --ink-dk: #002676;   /* тёмный вариант: имена, вензель */
+
+  --serif: 'Cormorant Garamond', 'Times New Roman', serif;
+
+  /* 1 «дизайн-пиксель» исходного макета шириной 390 */
+  --u: calc(100vw / 390);
+}
+@media (min-width:440px){
+  :root{ --u: calc(440px / 390); }
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+[hidden]{ display:none !important; }   /* иначе display из класса перебивает атрибут */
+
+html{ -webkit-text-size-adjust:100%; }
+
+body{
+  margin:0;
+  font-family:var(--serif);
+  font-weight:400;
+  color:var(--text);
+  background:#DCE3F5;
+  overflow-x:hidden;
+}
+body.is-locked{ overflow:hidden; height:100%; }
+
+img{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+p{ margin:0; }
+
+.page{
+  position:relative;
+  width:calc(390 * var(--u));
+  margin:0 auto;
+  background:var(--lav);
+  overflow:hidden;
+  box-shadow:0 0 calc(60 * var(--u)) rgba(0,38,118,.16);
+}
+
+/* секции: высота задаётся padding-top в % от ширины,
+   поэтому весь блок масштабируется вместе с колонкой */
+.sec{ position:relative; width:100%; }
+.sec > *{ position:absolute; }
+
+/* ---------- типографика ---------- */
+.text{
+  font-size:calc(17.5 * var(--u));
+  line-height:1.5;
+  letter-spacing:.055em;
+  text-transform:uppercase;
+  text-align:center;
+  color:var(--text);
+}
+.text--sm{
+  font-size:calc(17 * var(--u));
+  text-transform:none;
+  letter-spacing:.01em;
+  line-height:1.6;
+}
+.text--right{ text-align:right; }
+
+/* каллиграфия — тот же шрифт, что в оригинале */
+@font-face{
+  font-family:'Florise';
+  src:url("../assets/fonts/florise.woff") format("woff");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+.script{
+  display:block;
+  font-family:'Florise',cursive;
+  font-weight:400;
+  line-height:1;
+  color:var(--ink);
+  white-space:nowrap;
+}
+
+/* =========================================================
+   КОНВЕРТ
+   Два слоя из готовых картинок: карман (конверт минус треугольник
+   створки) и створка на 3D-петле по своему верхнему краю, с печатью
+   в вершине. За ними ничего нет — в проёме и позади падающего
+   конверта сразу виден сайт.
+   ========================================================= */
+.envelope{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  transition:visibility 0s linear 1.9s;
+}
+.env__scene{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(#F2F6FF 0%, #E2EAF9 55%, #D3DEF3 100%);
+  /* гаснет сразу: дальше за конвертом должен просвечивать сайт */
+  transition:opacity .4s ease .15s;
+}
+.envelope__card{
+  position:absolute;
+  left:50%; top:50%;
+  /* конверт во весь экран: высота по экрану, ширина — из пропорций,
+     лишнее уходит за края колонки */
+  height:100%;
+  aspect-ratio:1184/772;
+  transform:translate(-50%,-50%);
+  perspective:calc(1100 * var(--u));
+  /* падает целиком, вместе с уже откинутой створкой */
+  transition:transform .6s cubic-bezier(.45,.05,.75,.4) .95s;
+}
+
+.env__body{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  background:url("../assets/img/env-body.png") center/100% 100% no-repeat;
+}
+
+/* створка: своя альфа задаёт треугольник, поэтому clip-path не нужен.
+   Петля — по верхнему краю картинки. Печать внутри, едет вместе. */
+.env__flap{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  background:url("../assets/img/env-flap.png") center/100% 100% no-repeat;
+  transform-origin:50% 0;
+  transition:transform 1.3s cubic-bezier(.45,.02,.4,1);
+}
+
+.seal{
+  position:absolute;
+  left:50%; top:64.77%;        /* вершина створки */
+  width:calc(118 * var(--u));  /* размер от колонки, а не от конверта */
+  aspect-ratio:734/710;
+  transform:translate(-50%,-50%);
+  padding:0; border:0; background:none;
+  cursor:pointer;
+  filter:drop-shadow(0 calc(3 * var(--u)) calc(5 * var(--u)) rgba(70,86,120,.42));
+  animation:sealPulse 2.8s ease-in-out infinite;
+}
+.seal img{ width:100%; }
+/* подсказка: стрелка на печать и надпись внизу */
+.env__hint{
+  position:absolute;
+  left:0; right:0;
+  bottom:calc(64 * var(--u));
+  z-index:5;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:calc(14 * var(--u));
+  color:var(--navy);
+  transition:opacity .35s ease;
+}
+.env__arrow{
+  width:calc(34 * var(--u));
+  height:calc(64 * var(--u));
+  animation:hintBob 2.2s ease-in-out infinite;
+}
+@keyframes hintBob{
+  0%,100%{ transform:translateY(0);                 opacity:.9; }
+  50%    { transform:translateY(calc(-8 * var(--u))); opacity:1; }
+}
+.env__hint span{
+  font-family:var(--serif);
+  font-size:calc(16 * var(--u));
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  text-shadow:0 calc(1 * var(--u)) calc(3 * var(--u)) rgba(255,255,255,.75);
+}
+.envelope.is-open .env__hint{ opacity:0; }
+
+@keyframes sealPulse{
+  0%,100%{ transform:translate(-50%,-50%) scale(1); }
+  50%    { transform:translate(-50%,-50%) scale(1.05); }
+}
+
+/* страница ждёт за конвертом и выезжает вверх */
+.page{ transition:transform .85s cubic-bezier(.4,.04,.25,1) .9s; }
+body.is-locked .page{ transform:translateY(calc(120 * var(--u))); }
+
+.envelope.is-open{ visibility:hidden; pointer-events:none; }
+.envelope.is-open .seal{ animation:none; }
+.envelope.is-open .env__scene{ opacity:0; }
+.envelope.is-open .env__flap{ transform:rotateX(-176deg); }
+.envelope.is-open .envelope__card{ transform:translate(-50%,-50%) translateY(210%); }
+
+/* =========================================================
+   1. ХИРО   (высота 844 / 390)
+   ========================================================= */
+.hero{
+  padding-top:216.4%;
+  background:linear-gradient(#F5F8FF 0%, var(--lav) 42%);
+}
+.hero__eyebrow{ left:10.8%; top:3.2%;  width:78.5%; z-index:5; }
+.hero__name   { left:10%;   top:12.5%; z-index:5; font-size:calc(58 * var(--u)); color:#264386; }
+.hero__sub    { left:41%;   top:22.7%; width:55%;   z-index:5; }
+.hero__hand   { left:27%;   top:30.6%; width:49%;   z-index:4; }
+.hero__hand img{ width:100%; }
+.hero__date{
+  position:absolute;
+  left:39.9%; top:18.5%;
+  transform:translate(-50%,-50%);
+  width:100%;
+  text-align:center;
+  font-size:calc(33 * var(--u));
+  line-height:1.25;
+  color:#002176;
+  white-space:normal;
+}
+
+.hero__flower{ z-index:3; pointer-events:none; }
+.hero__flower--l { left:-13%;  top:23.7%; width:55%; }
+.hero__flower--r { right:-12%; top:22%;   width:55%; }
+.hero__flower--bl{ left:8%;    top:45.5%; width:30%; }
+
+.hero__silk{
+  left:-12%; top:55%;
+  width:128%; max-width:none;
+  z-index:6;
+  pointer-events:none;
+}
+
+/* плеер */
+.player{
+  right:8%; top:9.5%;
+  z-index:7;
+  width:20%;
+  aspect-ratio:1;
+  padding:0; border:0; background:none;
+  cursor:pointer;
+}
+.player__ring{
+  width:100%;
+  animation:spin 16s linear infinite;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+.player__icon{
+  position:absolute;
+  top:50%; left:50%;
+  width:46%;
+  transform:translate(-50%,-50%);
+}
+.player__icon--pause{ display:none; }
+.player.is-playing .player__icon--play{ display:none; }
+.player.is-playing .player__icon--pause{ display:block; }
+
+/* индикатор прокрутки */
+.scroll-hint{
+  right:6%; top:84%;
+  width:8%;
+  z-index:7;
+}
+.scroll-hint img{ width:100%; }
+.scroll-hint i{
+  position:absolute;
+  left:50%; top:14%;
+  width:52%; aspect-ratio:1;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:var(--navy);
+  animation:hint 2s ease-in-out infinite;
+}
+@keyframes hint{
+  0%,100%{ transform:translate(-50%,0);   opacity:1; }
+  50%    { transform:translate(-50%,190%); opacity:.3; }
+}
+
+/* =========================================================
+   2. ПОРТРЕТ + СТИХ   (640 / 390)
+   ========================================================= */
+.bride{
+  padding-top:164.1%;
+  background:var(--lav);
+}
+.bride__photo{
+  left:23%; top:4%;
+  width:54%;
+}
+.bride__photo::before{           /* подложка со сдвигом, как у фото ресторана */
+  content:"";
+  position:absolute;
+  left:-11%; top:5%;
+  width:100%; height:96%;
+  border-radius:calc(14 * var(--u));
+  background:#DCE5FA;
+}
+.bride__img,
+.bride__stub{
+  position:relative;
+  width:100%;
+  border-radius:calc(12 * var(--u));
+  box-shadow:0 calc(10 * var(--u)) calc(24 * var(--u)) rgba(0,38,118,.16);
+}
+.bride__img{ display:none; }     /* показывается, только когда файл есть */
+.bride__stub{
+  aspect-ratio:3/4;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(160deg,#E7ECFA,#CFDAF2);
+  color:#7C8FC4;
+  font-size:calc(22 * var(--u));
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.bride__verse{
+  left:0; top:55%;
+  width:100%;
+  font-size:calc(15 * var(--u));
+  line-height:1.65;
+  letter-spacing:.045em;
+}
+
+/* =========================================================
+   2. ПРИВЕТСТВИЕ + ТАЙМЕР   (844 / 390)
+   ========================================================= */
+.greeting{
+  padding-top:216.4%;
+  background:linear-gradient(var(--lav) 0%, var(--lav) 70%, #FFFFFF 93%);
+}
+.greeting__chandelier{ left:32.7%; top:-19.1%; width:34.5%; z-index:2; }
+.greeting__script    { left:7.7%; top:8.4%;  font-size:calc(58 * var(--u)); }
+.greeting__caps{
+  left:auto; right:6%; top:19.5%;
+  font-size:calc(50 * var(--u));
+}
+
+.greeting .g-p1   { left:0; top:26.5%; width:100%; }
+.greeting .g-lbl  { left:0; top:55.7%; width:100%; letter-spacing:.09em; }
+
+.countdown{
+  left:0; top:60.7%;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  gap:calc(11 * var(--u));
+}
+.countdown__cell{ text-align:center; }
+.countdown__num{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:calc(62 * var(--u));
+  height:calc(62 * var(--u));
+  border:calc(1.5 * var(--u)) solid var(--navy);
+  border-radius:50%;
+  font-size:calc(20 * var(--u));
+  color:var(--navy);
+}
+.countdown__lbl{
+  display:block;
+  margin-top:calc(9 * var(--u));
+  font-size:calc(13 * var(--u));
+  letter-spacing:.05em;
+  color:var(--label);
+}
+.greeting__silk{
+  left:-12%; top:73.5%;
+  width:128%; max-width:none;
+  pointer-events:none;
+}
+
+/* =========================================================
+   3. ДАТА И МЕСТО   (844 / 390)
+   ========================================================= */
+.place{
+  padding-top:307.7%;
+  background:linear-gradient(#FFFFFF 0%, #FFFFFF 86%, var(--lav) 100%);
+}
+.place__month{ left:0; top:7.9%; width:100%; text-align:center; font-size:calc(67 * var(--u)); }
+
+.cal{
+  left:6%; top:18%;
+  width:88%;
+  border-collapse:collapse;
+  table-layout:fixed;
+}
+.cal th{ color:var(--cal); }
+.cal th,
+.cal td{
+  padding:calc(7 * var(--u)) 0;
+  text-align:center;
+  font-weight:400;
+  font-size:calc(18 * var(--u));
+  color:var(--cal);
+  letter-spacing:.01em;
+}
+.cal__on{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:calc(42 * var(--u));
+  height:calc(37 * var(--u));
+  color:#FFFFFF;
+}
+.cal__on img{
+  position:absolute;
+  left:0; top:0;
+  width:100%; height:100%;
+  object-fit:contain;
+  pointer-events:none;
+}
+.cal__on i{
+  position:relative;
+  font-style:normal;
+  padding-bottom:calc(6 * var(--u));
+}
+
+.place__h1   { left:1.3%;  top:43.4%; font-size:calc(73 * var(--u)); }
+.place__h2   { left:auto;  right:6%; top:51.7%; font-size:calc(60 * var(--u)); }
+.place__venue{
+  left:0; top:59.8%;
+  width:100%;
+  text-align:center;
+  font-size:calc(33 * var(--u));
+  letter-spacing:.03em;
+  color:var(--navy);
+}
+.place__resto{
+  left:0; top:64.6%;
+  width:100%;
+  font-size:calc(21 * var(--u));
+  letter-spacing:.17em;
+  color:var(--blue);
+}
+
+.photo{
+  left:25.6%; top:67.9%;
+  width:49%;
+}
+.photo::before{
+  content:"";
+  position:absolute;
+  left:-12%; top:5%;
+  width:100%; height:96%;
+  border-radius:calc(14 * var(--u));
+  background:#DCE5FA;
+}
+.photo__img{
+  position:relative;
+  width:100%;
+  border-radius:calc(12 * var(--u));
+  box-shadow:0 calc(10 * var(--u)) calc(24 * var(--u)) rgba(0,38,118,.16);
+}
+/* настоящее фото показывается только когда файл действительно есть */
+.photo__img--real{ display:none; }
+
+/* заглушка, пока нет фото ресторана */
+.photo__img--empty{
+  aspect-ratio:1080/1434;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(160deg,#E7ECFA,#CFDAF2);
+  color:#7C8FC4;
+  text-align:center;
+  font-size:calc(22 * var(--u));
+  letter-spacing:.16em;
+  line-height:1.6;
+}
+.photo__map{
+  position:absolute;
+  z-index:2;
+  left:50%; bottom:calc(-30 * var(--u));
+  width:calc(96 * var(--u));
+  height:calc(96 * var(--u));
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:rgba(120,148,198,.74);
+  color:#FFFFFF;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  line-height:1;
+  transition:background .25s ease;
+}
+.photo__map:hover{ background:rgba(0,38,118,.74); }
+.photo__map b{ font-weight:400; font-size:calc(28 * var(--u)); }
+.photo__map span{
+  margin-top:calc(3 * var(--u));
+  font-size:calc(16 * var(--u));
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+
+.place__addr{
+  left:0; top:94.3%;
+  width:100%;
+  text-align:center;
+  font-size:calc(20 * var(--u));
+  line-height:1.5;
+  color:var(--label);
+  white-space:nowrap;
+}
+
+/* =========================================================
+   4. ПРОГРАММА   (1250 / 390)
+   ========================================================= */
+.timing{
+  padding-top:320.5%;
+  background:linear-gradient(var(--lav) 0%, var(--lav) 80%, #FFFFFF 96%);
+}
+.timing__silk-top{
+  left:-12%; top:-3.4%;
+  width:128%; max-width:none;
+  z-index:1;
+  pointer-events:none;
+}
+.timing__title{ left:7.7%; top:20%; width:85%; z-index:2; }
+
+.timing__path{
+  left:0; top:0;
+  width:100%; height:100%;
+  z-index:1;
+  pointer-events:none;
+}
+
+.timing__icon{ z-index:2; opacity:.8; }
+.i-glasses{ left:12.8%; top:30.5%; width:17%; }
+.i-table  { left:14%;   top:49.2%; width:23%; }
+.i-plate  { left:14%;   top:70.2%; width:18%; }
+
+.t-time{
+  z-index:2;
+  font-size:calc(28 * var(--u));
+  color:var(--navy);
+}
+.t-what{
+  z-index:2;
+  font-size:calc(18 * var(--u));
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  line-height:1.35;
+  color:var(--text);
+}
+.t-15  { left:31.3%; top:32.1%; }
+.t-15w { left:12.8%; top:35%;   }
+.t-16  { left:43%;   top:75.6%; }
+.t-16w { left:14%;   top:76%;   }
+
+.timing__note{
+  z-index:2;
+  right:11%;
+  width:68%;
+  font-size:calc(17.5 * var(--u));
+}
+.timing__note--1{ top:41.6%; }
+.timing__note--2{ top:64.4%; }
+
+/* сердце едет по линии — базовая точка совпадает с серединой пути */
+.timing__heart{
+  left:27%; top:65%;
+  width:15.4%;
+  z-index:2;
+  transform:translate(-50%,-50%);
+}
+
+/* =========================================================
+   5. ЦВЕТЫ   (760 / 390)
+   ========================================================= */
+.decor{
+  padding-top:189.7%;
+  background:linear-gradient(#FFFFFF 0%, #FFFFFF 28%, var(--lav) 44%, var(--lav) 100%);
+}
+.decor__silk-top{
+  left:-12%; top:-30.3%;
+  width:128%; max-width:none;
+  z-index:2;
+  pointer-events:none;
+}
+.decor__bouquet{ top:1.4%; width:54%; z-index:1; }
+.decor__bouquet--l{ left:-28%; transform:rotate(180deg); }
+.decor__bouquet--r{ right:-28%; transform:rotate(180deg) scaleX(-1); }
+.sign{
+  left:0; top:6.5%;
+  width:100%;
+  z-index:3;
+  text-align:center;
+}
+.sign__lead{
+  display:block;
+  font-size:calc(44 * var(--u));
+}
+.sign__name{
+  display:block;
+  font-size:calc(44 * var(--u));
+  color:var(--ink-dk);
+}
+/* у Florise высокие росчерки, поэтому интервалы заданы построчно */
+.sign__lead + .sign__name{ margin-top:calc(39 * var(--u)); }
+.sign__amp + .sign__name{ margin-top:calc(30 * var(--u)); }
+.sign__amp{
+  display:block;
+  margin-top:calc(25 * var(--u));
+  font-family:var(--serif);
+  font-size:calc(40 * var(--u));
+  line-height:1;
+  color:#B9C7EA;
+}
+
+.decor__silk-bot{
+  left:-12%; top:59.5%;
+  width:128%; max-width:none;
+  z-index:2;
+  pointer-events:none;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .seal,.player__ring,.scroll-hint i{ animation:none; }
+  .env__flap,.env__body,.page,.seal{ transition-duration:.25s; transition-delay:0s; }
+  .flap,.envelope,.seal{ transition-duration:.25s; }
+}
