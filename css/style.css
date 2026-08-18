@@ -113,11 +113,12 @@ p{ margin:0; }
 .envelope__card{
   position:absolute;
   left:50%; top:50%;
-  width:calc(500 * var(--u));
+  /* конверт во весь экран: высота по экрану, ширина — из пропорций,
+     лишнее уходит за края колонки */
+  height:100%;
   aspect-ratio:1184/772;
   transform:translate(-50%,-50%);
   perspective:calc(1100 * var(--u));
-  filter:drop-shadow(0 calc(14 * var(--u)) calc(26 * var(--u)) rgba(56,80,140,.28));
   /* падает целиком, вместе с уже откинутой створкой */
   transition:transform .6s cubic-bezier(.45,.05,.75,.4) .95s;
 }
@@ -127,8 +128,10 @@ p{ margin:0; }
   position:absolute;
   inset:0;
   z-index:1;
-  clip-path:polygon(0 0, 100% 0, 50% 64.77%);
-  background:linear-gradient(180deg, #9DB6D4 0%, #C2D5E9 55%, #DCE8F5 100%);
+  /* та же бумага, что на створке: её альфа уже задаёт нужный треугольник.
+     Тень наводим фильтром, а не маской — маска по file:// местами блокируется. */
+  background:url("../assets/img/env-flap.png") center/100% 100% no-repeat;
+  filter:brightness(.71) saturate(1.22) contrast(1.03);
 }
 .env__body{
   position:absolute;
@@ -151,7 +154,7 @@ p{ margin:0; }
 .seal{
   position:absolute;
   left:50%; top:64.77%;        /* вершина створки */
-  width:21%;
+  width:calc(104 * var(--u));  /* размер от колонки, а не от конверта */
   aspect-ratio:621/788;
   transform:translate(-50%,-50%);
   padding:0; border:0; background:none;
@@ -165,7 +168,7 @@ p{ margin:0; }
   left:50.7%; top:66.9%;
   transform:translate(-50%,-50%);
   font-family:var(--serif);
-  font-size:calc(23 * var(--u));
+  font-size:calc(25 * var(--u));
   letter-spacing:.02em;
   line-height:1;
   white-space:nowrap;
@@ -186,7 +189,7 @@ body.is-locked .page{ transform:translateY(calc(120 * var(--u))); }
 .envelope.is-open .seal{ animation:none; }
 .envelope.is-open .env__scene{ opacity:0; }
 .envelope.is-open .env__flap{ transform:rotateX(-176deg); }
-.envelope.is-open .envelope__card{ transform:translate(-50%,-50%) translateY(300%); }
+.envelope.is-open .envelope__card{ transform:translate(-50%,-50%) translateY(210%); }
 
 /* =========================================================
    1. ХИРО   (высота 844 / 390)
