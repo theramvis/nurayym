@@ -127,33 +127,39 @@ assets/audio/   song.mp3
 | Фото ресторана | `assets/img/venue.jpg` (900×1200, 3:4). Чтобы заменить — просто перезапишите файл; если картинка пропадёт, вместо неё снова покажется заглушка `.photo__img--empty` |
 | Музыка | `assets/audio/song.mp3` |
 
+## Структура студии
+
+Один репозиторий и один проект Cloudflare Pages на все сайты-приглашения:
+
+```
+index.html            заглушка корня kelgile.com
+deploy.sh             собирает dist/ из всех сайтов и публикует
+sites/
+  nuraim-qyzuzatuu/   отдельный сайт целиком: index.html, css, js, assets
+  <следующий>/        новый клиент — просто ещё одна папка рядом
+```
+
+Имя папки в `sites/` = путь на домене. Папка `nuraim-qyzuzatuu` отдаётся по адресу
+`kelgile.com/nuraim-qyzuzatuu/`, никакой настройки маршрутов не нужно.
+
+**Cloudflare Pages публикует снимок целиком.** Если выложить каталог одного сайта,
+остальные с домена исчезнут — деплой не «добавляет», а заменяет. Поэтому публиковать
+только через `./deploy.sh`: он всегда пересобирает `dist/` из всех папок `sites/*`.
+Из сборки исключаются исходники конверта (`assets/envelope`) и README — на сайте они
+не нужны, а весят изрядно.
+
+Сайты держатся отдельными копиями, а не общим ядром: каждый — законченная работа для
+своего клиента, и правка одного не должна ронять другой. Плата за это — общие
+материалы (шрифт, шёлк, цветы, люстра) лежат в каждой папке своей копией, около 11 МБ
+на сайт. Для CDN это ничто.
+
 ## Публикация
 
-Основная площадка — **Cloudflare Pages**, проект `kelgile`, аккаунт theramvis@gmail.com.
-Сайт лежит подкаталогом, чтобы на домене он открывался по пути:
+Проект Cloudflare Pages `kelgile`, аккаунт theramvis@gmail.com. Публикация:
 
 ```
-корень проекта/
-  index.html              заглушка kelgile
-  nuraim-qyzuzatuu/       этот сайт
+./deploy.sh
 ```
-
-Боевой адрес — **https://kelgile.com/nuraim-qyzuzatuu/**
-Технический, всегда доступен — https://kelgile.pages.dev/nuraim-qyzuzatuu/
-
-Обновление:
-
-```
-rsync -a --exclude .git --exclude README.md --exclude assets/envelope \
-      "/Users/marisrakhmanov/Новая папка/" /tmp/cf/nuraim-qyzuzatuu/
-npx wrangler pages deploy /tmp/cf --project-name kelgile --branch main
-```
-
-Все пути внутри страницы относительные, поэтому подкаталог её не ломает; абсолютны
-только `og:url` и `og:image` — их менять при смене адреса.
-
-Резервная копия — GitHub Pages, https://theramvis.github.io/nurayym/ (репозиторий
-`theramvis/nurayym`, ветка `main`, обновляется обычным `git push`).
 
 ### Домен
 

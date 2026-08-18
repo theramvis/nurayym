@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Нурайым кыз узатуу | сайт-приглашение | @priglasi_ava</title>
+<meta name="description" content="Кыз узатууга чакыруу — Нурайым. 13-сентябрь 2026, саат 17:00, «ANEL GRAND HALL» рестораны, Бишкек ш., Мадиева к., 22А.">
+<meta property="og:url" content="https://kelgile.com/nuraim-qyzuzatuu/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Нурайым кыз узатуу | сайт-приглашение">
+<meta property="og:description" content="Урматтуу коноктор! Сиздерди кызыбыз Нурайымдын кыз узатуу аземине чакырабыз.">
+<meta property="og:image" content="https://kelgile.com/nuraim-qyzuzatuu/assets/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="is-locked">
+
+<!-- ================= КОНВЕРТ ================= -->
+<div class="envelope" id="envelope">
+  <div class="env__scene"></div>
+  <div class="envelope__card">
+    <div class="env__body"></div>
+    <div class="env__flap">
+      <button class="seal" id="sealBtn" type="button" aria-label="Басыңыз — чакырууну ачуу">
+        <img src="assets/img/env-seal.png" alt="">
+      </button>
+    </div>
+  </div>
+
+  <div class="env__hint" aria-hidden="true">
+    <svg class="env__arrow" viewBox="0 0 40 66">
+      <path d="M20 64 C20 48, 13 36, 20 10" fill="none" stroke="currentColor"
+            stroke-width="1.7" stroke-linecap="round"/>
+      <path d="M12.5 20 L20 8 L27.5 20" fill="none" stroke="currentColor"
+            stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Открыть приглашение</span>
+  </div>
+</div>
+
+<audio id="track" loop preload="auto" src="assets/audio/song.mp3"></audio>
+
+<main class="page" id="page">
+
+  <!-- ================= 1. ХИРО ================= -->
+  <section class="sec hero">
+    <img src="assets/img/flower-dark.png"   alt="" class="hero__flower hero__flower--l">
+    <img src="assets/img/flower-dark-2.png" alt="" class="hero__flower hero__flower--r">
+    <img src="assets/img/flower-light.png"  alt="" class="hero__flower hero__flower--bl">
+
+    <img src="assets/img/t-kyz-uzatuuga-chakyruu.png" alt="Кыз узатууга чакыруу" class="hero__eyebrow">
+    <span class="hero__name script">Нурайым</span>
+    <img src="assets/img/t-kyz-uzatuu.png" alt="Кыз узатуу" class="hero__sub">
+    <div class="hero__hand">
+      <img src="assets/img/hand-card.png" alt="">
+      <span class="hero__date script">13-сентябрь<br>2026</span>
+    </div>
+
+    <img src="assets/img/silk.png" alt="" class="hero__silk">
+
+    <button class="player" id="playerBtn" type="button" aria-label="Музыканы күйгүзүү / өчүрүү" aria-pressed="false">
+      <img src="assets/img/song-ring.png"  alt="" class="player__ring">
+      <img src="assets/img/icon-play.png"  alt="" class="player__icon player__icon--play">
+      <img src="assets/img/icon-pause.png" alt="" class="player__icon player__icon--pause">
+    </button>
+
+    <span class="scroll-hint" aria-hidden="true">
+      <img src="assets/img/scroll-pill.png" alt="">
+      <i></i>
+    </span>
+  </section>
+
+  <!-- ================= 2. ПРИВЕТСТВИЕ + ТАЙМЕР ================= -->
+  <section class="sec greeting">
+    <img src="assets/img/chandelier.png" alt="" class="greeting__chandelier">
+
+    <span class="greeting__script script">Урматтуу</span>
+    <span class="greeting__caps script">Коноктор!</span>
+
+    <p class="text g-p1">
+      Сиздерди кызыбыз<br>
+      Нурайымдын кыз узатуу<br>
+      аземине арналган салтанатка<br>
+      келип, ак дасторконубуздун<br>
+      үстүндө бата берип, кадырлуу<br>
+      коногубуз болуп кетүүгө<br>
+      чакырабыз
+    </p>
+
+    <p class="text g-lbl">Той салтанатына чейин:</p>
+
+    <div class="countdown" id="countdown">
+      <div class="countdown__cell"><span class="countdown__num" data-cd="days">0</span><span class="countdown__lbl">күн</span></div>
+      <div class="countdown__cell"><span class="countdown__num" data-cd="hours">0</span><span class="countdown__lbl">саат</span></div>
+      <div class="countdown__cell"><span class="countdown__num" data-cd="minutes">0</span><span class="countdown__lbl">мүнөт</span></div>
+      <div class="countdown__cell"><span class="countdown__num" data-cd="seconds">0</span><span class="countdown__lbl">секунд</span></div>
+    </div>
+
+    <img src="assets/img/silk.png" alt="" class="greeting__silk">
+  </section>
+
+  <!-- ================= 3. ДАТА И МЕСТО ================= -->
+  <section class="sec place">
+    <span class="place__month script">Сентябрь</span>
+
+    <table class="cal">
+      <thead>
+        <tr><th>Дш</th><th>Ше</th><th>Ша</th><th>Бе</th><th>Жм</th><th>Иш</th><th>Жк</th></tr>
+      </thead>
+      <tbody>
+        <tr><td></td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr>
+        <tr><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td>
+            <td><span class="cal__on"><img src="assets/img/heart-cal.png" alt=""><i>13</i></span></td></tr>
+        <tr><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td></tr>
+        <tr><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td></tr>
+        <tr><td>28</td><td>29</td><td>30</td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+
+    <span class="place__h1 script">Дареги жана</span>
+    <span class="place__h2 script">убактысы</span>
+    <span class="place__venue">“ANEL GRAND HALL”</span>
+    <p class="text place__resto">Рестораны</p>
+
+    <div class="photo">
+      <!-- Положите снимок в assets/img/venue.jpg — он подхватится сам,
+           заглушка ниже спрячется. Файла нет — остаётся заглушка. -->
+      <div class="photo__img photo__img--empty" id="venueStub" role="img" aria-label="ANEL GRAND HALL">
+        <span>ANEL<br>GRAND<br>HALL</span>
+      </div>
+      <img src="assets/img/venue.jpg" alt="Ресторан «ANEL GRAND HALL»" class="photo__img photo__img--real"
+           onload="document.getElementById('venueStub').hidden=true;this.style.display='block'"
+           onerror="this.remove()">
+      <a class="photo__map" href="https://2gis.kg/bishkek/search/ANEL%20GRAND%20HALL/firm/70000001079817962/74.643226%2C42.822157" target="_blank" rel="noopener">
+        <b>2GIS</b><span>Карта</span>
+      </a>
+    </div>
+
+    <p class="place__addr">
+      <a href="https://yandex.ru/maps/?ll=74.643226%2C42.822157&amp;z=17&amp;pt=74.643226%2C42.822157" target="_blank" rel="noopener">
+        Бишкек ш., Мадиева к., 22А
+      </a>
+    </p>
+  </section>
+
+  <!-- ================= 4. ПРОГРАММА ================= -->
+  <section class="sec timing">
+    <img src="assets/img/silk.png" alt="" class="timing__silk-top">
+    <img src="assets/img/t-toi-saltanaty.png" alt="Той салтанаты:" class="timing__title">
+
+    <svg class="timing__path" viewBox="0 0 390 1250" aria-hidden="true">
+      <path id="toiPath" d="M -40 300
+               C  80 322, 241 379, 241 430
+               C 241 481,  96 507,  96 558
+               C  96 611, 248 637, 248 690
+               C 248 741, 112 767, 112 818
+               C 112 895, 300 970, 430 1010"
+            fill="none" stroke="#00268C" stroke-width="1.6"/>
+    </svg>
+
+    <img src="assets/img/icon-glasses.png" alt="" class="timing__icon i-glasses">
+    <p class="t-time t-15">16:00</p>
+    <p class="t-what t-15w">Коноктор<br>жыйыны</p>
+
+    <p class="text text--right timing__note timing__note--1">
+      Жакшы маанай<br>тартуулап, кечебизди<br>шаңдуу кылыңыз
+    </p>
+
+    <img src="assets/img/heart.png" alt="" class="timing__heart">
+    <img src="assets/img/icon-table.png" alt="" class="timing__icon i-table">
+
+    <p class="text text--right timing__note timing__note--2">
+      Жүрөктөн чыккан<br>колдооңуздарга<br>ыраазы болобуз
+    </p>
+
+    <img src="assets/img/icon-plate.png" alt="" class="timing__icon i-plate">
+    <p class="t-time t-16">17:00</p>
+    <p class="t-what t-16w">Тойдун<br>башталышы</p>
+  </section>
+
+  <!-- ================= 5. ЦВЕТЫ ================= -->
+  <section class="sec decor">
+    <img src="assets/img/silk.png"    alt="" class="decor__silk-top">
+    <img src="assets/img/bouquet.png" alt="" class="decor__bouquet decor__bouquet--l">
+    <img src="assets/img/bouquet.png" alt="" class="decor__bouquet decor__bouquet--r">
+    <div class="sign">
+      <span class="sign__lead script">Той ээлери:</span>
+      <span class="sign__name script">Нурлан</span>
+      <span class="sign__amp">&amp;</span>
+      <span class="sign__name script">Канайым</span>
+    </div>
+
+    <img src="assets/img/silk.png"    alt="" class="decor__silk-bot">
+  </section>
+
+</main>
+
+<script src="js/main.js"></script>
+</body>
+</html>
