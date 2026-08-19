@@ -1,0 +1,8 @@
+# Cloudflare Pages: как кешировать. По умолчанию Pages ставит картинкам
+# 4 часа, и после подмены файла люди ещё полдня видят старую версию.
+/*
+  Cache-Control: public, max-age=1800, must-revalidate
+
+# страницы всегда сверяются с сервером — правки видны сразу
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate

@@ -5,7 +5,7 @@
 set -e
 cd "$(dirname "$0")"
 rm -rf dist && mkdir -p dist
-cp index.html dist/
+cp index.html _headers dist/
 for d in sites/*/; do
   name=$(basename "$d")
   rsync -a --exclude 'assets/envelope' --exclude 'README.md' --exclude '.DS_Store' "$d" "dist/$name/"
