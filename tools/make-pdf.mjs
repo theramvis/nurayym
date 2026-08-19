@@ -104,10 +104,10 @@ for (const lang of ['kg', 'ru']) {
   await p.waitForTimeout(600);
 
   const h = await p.evaluate(() => document.body.scrollHeight);
-  const out = join(site, 'priglashenie-' + lang + '.pdf');
+  const out = join(site, 'aiday-' + (lang === 'kg' ? 'kyrgyz' : 'russian') + '.pdf');
   await p.pdf({ path: out, width: '390px', height: h + 'px', printBackground: true,
                 margin: { top: 0, right: 0, bottom: 0, left: 0 } });
-  console.log('  собран priglashenie-%s.pdf  (390 × %d)', lang, h);
+  console.log('  собран aiday-%s.pdf  (390 × %d)', lang, h);
   await p.close();
 }
 await b.close();
