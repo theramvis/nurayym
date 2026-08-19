@@ -25,18 +25,20 @@
     window.setTimeout(autoScroll, 2200);
   }
 
-  /* Когда конверт убрался, страница сама мягко уезжает на экран ниже —
-     показывает, что дальше есть что смотреть. Любое действие человека
-     (колесо, палец, клавиша) прерывает прокрутку немедленно. */
+  /* Когда конверт убрался, страница едет вниз сама — медленно и до конца,
+     чтобы приглашение можно было просто смотреть. Скорость постоянная,
+     первые полторы секунды — мягкий разгон. Любое действие человека
+     (колесо, палец, клавиша) останавливает прокрутку насовсем: он взял
+     управление на себя, бороться с ним нельзя. */
   function autoScroll() {
-    var target = document.querySelector('.bride');
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!target || reduce) return;
+    if (reduce) return;
 
-    var from = window.pageYOffset,
-        to   = target.offsetTop,
-        DUR  = 1500,
-        start = null,
+    var SPEED = 75,          /* пикселей в секунду */
+        RAMP  = 1500,        /* разгон, мс */
+        pos = window.pageYOffset,
+        prev = null,
+        spent = 0,
         stopped = false,
         EVENTS = ['wheel', 'touchstart', 'keydown', 'mousedown'];
 
@@ -48,11 +50,18 @@
 
     function step(ts) {
       if (stopped) return;
-      if (start === null) start = ts;
-      var k = Math.min(1, (ts - start) / DUR);
-      var e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
-      window.scrollTo(0, from + (to - from) * e);
-      if (k < 1) window.requestAnimationFrame(step); else release();
+      if (prev === null) { prev = ts; window.requestAnimationFrame(step); return; }
+      var dt = Math.min(ts - prev, 100);   /* вкладку свернули — не прыгаем */
+      prev = ts;
+      spent += dt;
+
+      var ease = Math.min(1, spent / RAMP);
+      pos += SPEED * (dt / 1000) * ease * ease;
+
+      var limit = document.documentElement.scrollHeight - window.innerHeight;
+      if (pos >= limit) { window.scrollTo(0, limit); release(); return; }
+      window.scrollTo(0, pos);
+      window.requestAnimationFrame(step);
     }
     window.requestAnimationFrame(step);
   }
