@@ -145,7 +145,7 @@ p{ margin:0; }
   position:absolute;
   left:50%; top:64.77%;        /* вершина створки */
   width:calc(118 * var(--u));  /* размер от колонки, а не от конверта */
-  aspect-ratio:734/710;
+  aspect-ratio:721/709;
   transform:translate(-50%,-50%);
   padding:0; border:0; background:none;
   cursor:pointer;
@@ -153,18 +153,6 @@ p{ margin:0; }
   animation:sealPulse 2.8s ease-in-out infinite;
 }
 .seal img{ width:100%; }
-/* инициал на печати — текст, а не картинка: меняется одной буквой в index.html */
-.seal__initial{
-  position:absolute;
-  left:50.4%; top:49.6%;
-  transform:translate(-50%,-52%);
-  font-family:var(--serif);
-  font-size:calc(58 * var(--u));
-  line-height:1;
-  color:#E4EEF7;
-  text-shadow:0 calc(-1 * var(--u)) 0 rgba(255,255,255,.95),
-              0 calc(2 * var(--u)) calc(3 * var(--u)) rgba(96,134,180,.6);
-}
 /* подсказка: стрелка на печать и надпись внизу */
 .env__hint{
   position:absolute;

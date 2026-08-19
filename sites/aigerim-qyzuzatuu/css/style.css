@@ -145,7 +145,7 @@ p{ margin:0; }
   position:absolute;
   left:50%; top:64.77%;        /* вершина створки */
   width:calc(118 * var(--u));  /* размер от колонки, а не от конверта */
-  aspect-ratio:734/710;
+  aspect-ratio:721/709;
   transform:translate(-50%,-50%);
   padding:0; border:0; background:none;
   cursor:pointer;
