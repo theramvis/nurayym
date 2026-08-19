@@ -22,6 +22,39 @@
     player.classList.add('is-visible');
     playTrack();
     window.setTimeout(function () { envelope.remove(); }, 2100);
+    window.setTimeout(autoScroll, 2200);
+  }
+
+  /* Когда конверт убрался, страница сама мягко уезжает на экран ниже —
+     показывает, что дальше есть что смотреть. Любое действие человека
+     (колесо, палец, клавиша) прерывает прокрутку немедленно. */
+  function autoScroll() {
+    var target = document.querySelector('.bride');
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!target || reduce) return;
+
+    var from = window.pageYOffset,
+        to   = target.offsetTop,
+        DUR  = 1500,
+        start = null,
+        stopped = false,
+        EVENTS = ['wheel', 'touchstart', 'keydown', 'mousedown'];
+
+    function release() {
+      EVENTS.forEach(function (e) { window.removeEventListener(e, stop); });
+    }
+    function stop() { stopped = true; release(); }
+    EVENTS.forEach(function (e) { window.addEventListener(e, stop, { passive: true }); });
+
+    function step(ts) {
+      if (stopped) return;
+      if (start === null) start = ts;
+      var k = Math.min(1, (ts - start) / DUR);
+      var e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+      window.scrollTo(0, from + (to - from) * e);
+      if (k < 1) window.requestAnimationFrame(step); else release();
+    }
+    window.requestAnimationFrame(step);
   }
 
   sealBtn.addEventListener('click', openEnvelope);

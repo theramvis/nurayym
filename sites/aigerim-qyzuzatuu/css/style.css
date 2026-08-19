@@ -284,12 +284,12 @@ body.is-locked .page{ transform:translateY(calc(120 * var(--u))); }
    2. ПОРТРЕТ + СТИХ   (640 / 390)
    ========================================================= */
 .bride{
-  padding-top:164.1%;
+  padding-top:200%;
   background:var(--lav);
 }
 .bride__photo{
-  left:25%; top:4%;
-  width:50%;   /* кадр 2:3, а не 3:4 — иначе упирается в стих */
+  left:16%; top:3.3%;
+  width:68%;   /* кадр 2:3, а не 3:4 */
 }
 .bride__photo::before{           /* подложка со сдвигом, как у фото ресторана */
   content:"";
@@ -319,7 +319,7 @@ body.is-locked .page{ transform:translateY(calc(120 * var(--u))); }
   text-transform:uppercase;
 }
 .bride__verse{
-  left:0; top:57%;
+  left:0; top:60%;
   width:100%;
   font-size:calc(15 * var(--u));
   line-height:1.65;
