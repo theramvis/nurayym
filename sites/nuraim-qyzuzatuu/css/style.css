@@ -120,8 +120,6 @@ p{ margin:0; }
   aspect-ratio:1184/772;
   transform:translate(-50%,-50%);
   perspective:calc(1100 * var(--u));
-  /* падает целиком, вместе с уже откинутой створкой */
-  transition:transform .6s cubic-bezier(.45,.05,.75,.4) .95s;
 }
 
 .env__body{
@@ -129,6 +127,7 @@ p{ margin:0; }
   inset:0;
   z-index:2;
   background:url("../assets/img/env-body.png") center/100% 100% no-repeat;
+  transition:transform .6s cubic-bezier(.45,.05,.75,.4) .95s;
 }
 
 /* створка: своя альфа задаёт треугольник, поэтому clip-path не нужен.
@@ -198,7 +197,7 @@ body.is-locked .page{ transform:translateY(calc(120 * var(--u))); }
 .envelope.is-open .seal{ animation:none; }
 .envelope.is-open .env__scene{ opacity:0; }
 .envelope.is-open .env__flap{ transform:rotateX(-176deg); }
-.envelope.is-open .envelope__card{ transform:translate(-50%,-50%) translateY(210%); }
+.envelope.is-open .env__body{ transform:translateY(105%); }
 
 /* =========================================================
    1. ХИРО   (высота 844 / 390)
